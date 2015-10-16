@@ -1,0 +1,46 @@
+{
+  "name": "slush-hirsch",
+  "description": "TypeScript Generator for module-based applications",
+  "version": "0.0.0",
+  "homepage": "https://github.com/hirsch88/slush-hirsch",
+  "author": {
+    "name": "hirsch",
+    "email": "gery.hirschfeld@w3tec.ch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hirsch88/slush-hirsch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hirsch88/slush-hirsch/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/hirsch88/slush-hirsch/blob/master/LICENSE"
+    }
+  ],
+  "main": "slushfile.js",
+  "engines": {
+    "node": ">= 0.10.26",
+    "npm": ">=1.4.3"
+  },
+  "scripts": {
+    "test": "echo \"No tests\""
+  },
+  "dependencies": {
+    "gulp": "^3.6.2",
+    "gulp-conflict": "^0.1.1",
+    "gulp-install": "^0.1.4",
+    "gulp-rename": "^1.2.0",
+    "gulp-template": "^0.1.1",
+    "iniparser": "^1.0.5",
+    "inquirer": "^0.8.0",
+    "require-dir": "^0.3.0",
+    "slush": ">=1.0.0",
+    "underscore.string": "^2.3.3"
+  },
+  "keywords": [
+    "slushgenerator"
+  ]
+}
