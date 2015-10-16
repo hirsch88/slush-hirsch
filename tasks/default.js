@@ -9,8 +9,8 @@ var gulp = require('gulp'),
     inquirer = require('inquirer'),
     path = require('path');
 
-var util = require('util');
-var defaults = util.defaults;
+var util = require('../util.js');
+var defaults = util.defaults();
 
 gulp.task('default', function (done) {
     var prompts = [{
