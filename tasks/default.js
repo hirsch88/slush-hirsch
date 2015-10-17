@@ -47,16 +47,24 @@ gulp.task('default', function (done) {
       if (!answers.moveon) {
         return done();
       }
+
+      var source = path.join(__dirname, '../', 'templates/app/**');
+      var target = path.basename(process.cwd());
+      if (target !== answers.appName) {
+        target = path.join(answers.appName);
+      }
+      target = path.join('./', target);
+
       answers.appNameSlug = _.slugify(answers.appName);
-      gulp.src(path.join(__dirname, '../', 'templates/app/**'))
+      gulp.src(source)
         .pipe(template(answers))
         .pipe(rename(function (file) {
           if (file.basename[0] === '_') {
             file.basename = '.' + file.basename.slice(1);
           }
         }))
-        .pipe(conflict('./'))
-        .pipe(gulp.dest('./'))
+        .pipe(conflict(target))
+        .pipe(gulp.dest(target))
         .pipe(install())
         .on('end', function () {
           done();
