@@ -1,16 +1,101 @@
 'use strict';
 
-var _     = require('underscore.string'),
-    chalk = require('chalk'),
-    path  = require('path');
+var _        = require('underscore.string'),
+    chalk    = require('chalk'),
+    inquirer = require('inquirer'),
+    path     = require('path');
 
 module.exports = {
+  getPkg: getPkg,
+  getPaths: getPaths,
+  getGulpConfig: getGulpConfig,
   format: format,
   defaults: defaults,
-  hirschSayHi: hirschSayHi
+  hirschSayHi: hirschSayHi,
+  buildContext: buildContext,
+  folderPrompt: folderPrompt,
+  convertModuleToPath: convertModuleToPath,
+  convertPathToModule: convertPathToModule,
+  onSuccess: onSuccess
 };
 
 /////////////////////////////////////////////////
+
+function getPaths(templateName) {
+  return {
+    source: path.join(__dirname, 'templates/' + templateName + '.ts'),
+    target: './src/app'
+  };
+}
+
+function onSuccess(taskName, fileName) {
+  console.log('');
+  console.log(chalk.green('✔ ') + taskName + ' ' + chalk.green(fileName) + ' created');
+  console.log('');
+}
+
+function folderPrompt($default, cb) {
+  var prompts = [{
+    name: 'folder',
+    message: 'In which folder should the file be placed?',
+    default: $default
+  }];
+  inquirer.prompt(prompts, function (answers) {
+    var o = {};
+    o.path = answers.folder;
+    o.dirName = answers.folder.replace(/(\/|\\)/g, '/').replace(/(^\/|\/$)/g, '');
+    o.namespace = o.dirName.replace(/\//g, '.');
+    var levels = (o.namespace.match(/\./g) || []).length;
+    o.typingNesting = '';
+    while (levels--) {
+      o.typingNesting += '../';
+    }
+    cb(o);
+  });
+}
+
+function convertModuleToPath(module) {
+  return module.split('.').join('/');
+}
+
+function convertPathToModule(path) {
+  return path.split('/').join('.');
+}
+
+function getPkg() {
+  return require(path.join(process.cwd(), 'package.json'));
+}
+
+function getGulpConfig() {
+  return require(path.join(process.cwd(), 'gulp.config.js'));
+}
+
+function buildContext(answers, folder) {
+  var context = {};
+  context.typingNesting = '';
+  context.Namespace = '${Namespace}';
+  var pkg = getPkg();
+  for (var i in pkg) {
+    if (pkg.hasOwnProperty(i)) {
+      context[i] = pkg[i];
+    }
+  }
+  for (var i in answers) {
+    if (answers.hasOwnProperty(i)) {
+      context[i] = answers[i];
+    }
+  }
+  for (var i in folder) {
+    if (folder.hasOwnProperty(i)) {
+      context[i] = folder[i];
+    }
+  }
+  context.slugedName = _.slugify(context.name);
+  context.capitalizedName = _.capitalize(context.name);
+  context.camelizedName = _.camelize(context.name);
+  return context;
+}
+
 
 function format(string) {
   var username = string.toLowerCase();

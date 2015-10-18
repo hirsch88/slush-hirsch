@@ -1,0 +1,7 @@
+
+
+module model {
+  'use strict';
+
+
+}
