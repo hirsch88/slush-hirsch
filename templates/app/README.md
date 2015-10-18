@@ -1,1 +1,3 @@
-# Slush hirsch App
+# <%= appName %>
+
+> <%= appDescription %>

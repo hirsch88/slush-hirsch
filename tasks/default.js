@@ -1,7 +1,14 @@
+/**
+ * DEFAULT
+ * -------------------------------------------------------------
+ *
+ * This task scaffolds a TypeScript AngularJS App
+ */
 'use strict';
 
 var gulp     = require('gulp'),
     install  = require('gulp-install'),
+    tsd      = require('gulp-tsd'),
     conflict = require('gulp-conflict'),
     template = require('gulp-template'),
     rename   = require('gulp-rename'),
@@ -18,12 +25,16 @@ gulp.task('default', function (done) {
     message: 'What is the name of your project?',
     default: defaults.appName
   }, {
+    name: 'appPrefix',
+    message: 'What is the prefix of your AngularJS app?',
+    default: 'my'
+  }, {
     name: 'appDescription',
     message: 'What is the description?'
   }, {
     name: 'appVersion',
     message: 'What is the version of your project?',
-    default: '0.1.0'
+    default: '0.0.0'
   }, {
     name: 'authorName',
     message: 'What is the author name?',
@@ -49,13 +60,17 @@ gulp.task('default', function (done) {
       }
 
       var source = path.join(__dirname, '../', 'templates/app/**');
-      var target = path.basename(process.cwd());
-      if (target !== answers.appName) {
-        target = path.join(answers.appName);
-      }
-      target = path.join('./', target);
+      var target = './'; //path.basename(process.cwd());
 
       answers.appNameSlug = _.slugify(answers.appName);
+      answers.Namespace = '${Namespace}';
+
+      answers.bannerAppName = '<%= name %>';
+      answers.bannerAppDescription = '<%= description %>';
+      answers.bannerAppVersion = '<%= version %>';
+      answers.bannerAppAuthor = '<%= author %>';
+      answers.bannerAppLicense = '<%= licenses %>';
+
       gulp.src(source)
         .pipe(template(answers))
         .pipe(rename(function (file) {
@@ -67,7 +82,13 @@ gulp.task('default', function (done) {
         .pipe(gulp.dest(target))
         .pipe(install())
         .on('end', function () {
-          done();
+          tsd({
+            command: 'reinstall',
+            config: target + '/tsd.json'
+          }, function () {
+            console.log(util.hirschSayHi());
+            done();
+          });
         });
     });
 });

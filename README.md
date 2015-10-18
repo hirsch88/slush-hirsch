@@ -1,6 +1,7 @@
 # Slush hirsch  [![NPM version](https://badge-me.herokuapp.com/api/npm/slush-hirsch.png)](http://badges.enytc.com/for/npm/slush-hirsch)
 
 > master  [![Build Status](https://travis-ci.org/hirsch88/slush-hirsch.svg?branch=master)](https://travis-ci.org/hirsch88/slush-hirsch)
+
 > develop [![Build Status](https://travis-ci.org/hirsch88/slush-hirsch.svg?branch=develop)](https://travis-ci.org/hirsch88/slush-hirsch)
 
 > TypeScript Generator for module-based applications

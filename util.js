@@ -1,29 +1,22 @@
 'use strict';
 
-var _    = require('underscore.string'),
-    path = require('path');
+var _     = require('underscore.string'),
+    chalk = require('chalk'),
+    path  = require('path');
 
 module.exports = {
   format: format,
-  defaults: defaults
+  defaults: defaults,
+  hirschSayHi: hirschSayHi
 };
 
 /////////////////////////////////////////////////
 
-/**
- *
- * @param string
- * @returns {string}
- */
 function format(string) {
   var username = string.toLowerCase();
   return username.replace(/\s/g, '');
 }
 
-/**
- *
- * @returns {{appName, userName, authorName, authorEmail}}
- */
 function defaults() {
   return (function () {
     var workingDirName = path.basename(process.cwd()),
@@ -47,4 +40,27 @@ function defaults() {
       authorEmail: user.email || ''
     };
   })();
+}
+
+function hirschSayHi() {
+  var icon = '';
+  icon += '\n';
+  icon += chalk.bold.grey('     /|        |\\                   \n');
+  icon += chalk.bold.grey('  `__\\\\        //__\'              \n');
+  icon += chalk.bold.grey('      ||      ||') + '         .---------------.     \n';
+  icon += chalk.bold.grey('    \\__`\\     |\'__/') + '      |     ' + chalk.blue('happy') + '     |     \n';
+  icon += chalk.bold.grey('      `_\\\\   //_\ ') + '        |   ' + chalk.bold('<') + chalk.bold.red('CODING') + chalk.bold('/> ') + '  |     \n';
+  icon += '      _.,:---;,._        \'---------------\'    \n';
+  icon += '      \\_:     :_/                              \n';
+  icon += '        |@. .@|                                 \n';
+  icon += '        |     |                                 \n';
+  icon += '         \\.-./            \n';
+  icon += '          `-\'             \n';
+
+  icon += '\n';
+  icon += '> Go to your project folder and run ' + chalk.bold.yellow('gulp serve\n');
+  icon += '> Then visit your app on ' + chalk.bold.yellow('http://localhost:3000\n');
+  icon += '\n';
+
+  return icon;
 }
