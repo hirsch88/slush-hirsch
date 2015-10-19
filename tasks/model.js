@@ -29,9 +29,10 @@ gulp.task('model', function (done) {
     util.modulePrompt(function (module) {
       util.folderPrompt('models', function (folder) {
         jsonResponsePrompt(function (response) {
+          answers.name = answers.answers + 'Model';
           var p = util.getPaths('model');
           var context = util.buildContext([answers, folder]);
-          var fileName = context.capitalizedName + 'Model.ts';
+          var fileName = context.capitalizedName + '.ts';
           var target = path.join(p.target, module, context.path);
           context.module = module;
           context = buildModelProperties(context, response);
@@ -42,7 +43,7 @@ gulp.task('model', function (done) {
             .pipe(gulp.dest(target))
             .on('end', function () {
               done();
-              util.onSuccess('Module', path.join(target, fileName));
+              util.onSuccess('Model', path.join(target, fileName));
             });
         });
       });
