@@ -1,8 +1,8 @@
 /**
- * DEFAULT
+ * MODULE
  * -------------------------------------------------------------
  *
- * This task scaffolds a TypeScript AngularJS App
+ * This task scaffolds a TypeScript AngularJS Module
  */
 'use strict';
 
@@ -25,16 +25,17 @@ gulp.task('module', function (done) {
   inquirer.prompt(prompts, function (answers) {
     util.folderPrompt(answers.name, function (folder) {
       var p = util.getPaths('module');
-      var context = util.buildContext(answers, folder);
+      var context = util.buildContext([answers, folder]);
       var fileName = '_' + context.capitalizedName + 'Module.ts';
+      var target = path.join(p.target, context.path);
       gulp.src(p.source)
         .pipe(template(context))
         .pipe(rename(fileName))
-        .pipe(conflict(p.target))
-        .pipe(gulp.dest(path.join(p.target, context.path)))
+        .pipe(conflict(target))
+        .pipe(gulp.dest(target))
         .on('end', function () {
           done();
-          util.onSuccess('Module', path.join(p.target, context.path, fileName));
+          util.onSuccess('Module', path.join(target, fileName));
         });
     });
   });

@@ -3,6 +3,7 @@
 var _        = require('underscore.string'),
     chalk    = require('chalk'),
     inquirer = require('inquirer'),
+    fs       = require('fs'),
     path     = require('path');
 
 module.exports = {
@@ -14,12 +15,17 @@ module.exports = {
   hirschSayHi: hirschSayHi,
   buildContext: buildContext,
   folderPrompt: folderPrompt,
+  modulePrompt: modulePrompt,
   convertModuleToPath: convertModuleToPath,
   convertPathToModule: convertPathToModule,
   onSuccess: onSuccess
 };
 
 /////////////////////////////////////////////////
+
+function getGulpConfig() {
+  return require('./gulp.config.js');
+}
 
 function getPaths(templateName) {
   return {
@@ -54,6 +60,43 @@ function folderPrompt($default, cb) {
   });
 }
 
+
+function modulePrompt(cb) {
+  getModulesFromFileStructure(function (modules) {
+    var $default = modules.indexOf('common');
+    $default = $default < 0 ? 0 : $default;
+    var prompts = [{
+      type: 'list',
+      name: 'choosenModule',
+      message: 'Choose a module?',
+      choices: modules,
+      default: $default
+    }];
+    inquirer.prompt(prompts, function (answers) {
+      cb(answers.choosenModule);
+    });
+  });
+}
+
+function getModulesFromFileStructure(done) {
+  var config = getGulpConfig();
+  fs.readdir('./src/app', function (err, files) {
+    if (files) {
+      var modules = [];
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].indexOf('.') === -1) {
+          if (config.ignoredModules.indexOf(files[i]) === -1) {
+            modules.push(files[i]);
+          }
+        }
+      }
+      done(modules);
+    } else {
+      done([]);
+    }
+  });
+}
+
 function convertModuleToPath(module) {
   return module.split('.').join('/');
 }
@@ -70,7 +113,7 @@ function getGulpConfig() {
   return require(path.join(process.cwd(), 'gulp.config.js'));
 }
 
-function buildContext(answers, folder) {
+function buildContext(arr) {
   var context = {};
   context.typingNesting = '';
   context.Namespace = '${Namespace}';
@@ -80,16 +123,15 @@ function buildContext(answers, folder) {
       context[i] = pkg[i];
     }
   }
-  for (var i in answers) {
-    if (answers.hasOwnProperty(i)) {
-      context[i] = answers[i];
+
+  for (var n = 0; n < arr.length; n++) {
+    for (var i in arr[n]) {
+      if (arr[n].hasOwnProperty(i)) {
+        context[i] = arr[n][i];
+      }
     }
   }
-  for (var i in folder) {
-    if (folder.hasOwnProperty(i)) {
-      context[i] = folder[i];
-    }
-  }
+
   context.slugedName = _.slugify(context.name);
   context.capitalizedName = _.capitalize(context.name);
   context.camelizedName = _.camelize(context.name);
