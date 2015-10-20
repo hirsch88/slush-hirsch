@@ -12,7 +12,7 @@ module <%= prefix %>.<%= module %>.<%= namespace %> {
 
     mapDataForApi() {
       var data = {};<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
-        data['<%= modelProperties[i].inApiName %>'] = this.<%= modelProperties[i].inAppName %><% if (modelProperties[i].type === 'moment.Moment') { %>.format('YYYY-mm-dd HH:MM:SS')<% } %>;<% } %>
+      data['<%= modelProperties[i].inApiName %>'] = this.<%= modelProperties[i].inAppName %><% if (modelProperties[i].type === 'moment.Moment') { %>.format('YYYY-mm-dd HH:MM:SS')<% } %>;<% } %>
       return data;
     }
 

@@ -28,8 +28,8 @@ gulp.task('model', function (done) {
   inquirer.prompt(prompts, function (answers) {
     util.modulePrompt(function (module) {
       util.folderPrompt('models', function (folder) {
-        jsonResponsePrompt(function (response) {
-          var p = util.getPaths('model');
+        jsonResponsePrompt(done, function (response) {
+          var p = util.getPaths('model', ['ts']);
           var context = util.buildContext([answers, folder]);
           var fileName = context.camelizedName + '.model.ts';
           var target = path.join(p.target, module, context.path);
@@ -82,18 +82,23 @@ function buildModelProperties(ctx, res) {
   return ctx;
 }
 
-function jsonResponsePrompt(done) {
+function jsonResponsePrompt(stop, done) {
   readJsonRespones(function (jsons) {
-    var prompts = [{
-      type: 'list',
-      name: 'json',
-      message: 'Choose a json response?',
-      choices: jsons,
-      default: 0
-    }];
-    inquirer.prompt(prompts, function (answers) {
-      done(answers.json);
-    });
+    if (jsons.length === 0) {
+      util.onError('Please place a json response in to the assets/response folder');
+      stop();
+    } else {
+      var prompts = [{
+        type: 'list',
+        name: 'json',
+        message: 'Choose a json response?',
+        choices: jsons,
+        default: 0
+      }];
+      inquirer.prompt(prompts, function (answers) {
+        done(answers.json);
+      });
+    }
   });
 }
 

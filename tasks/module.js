@@ -24,7 +24,7 @@ gulp.task('module', function (done) {
   //Ask
   inquirer.prompt(prompts, function (answers) {
     util.folderPrompt(answers.name, function (folder) {
-      var p = util.getPaths('module');
+      var p = util.getPaths('module', ['ts']);
       var context = util.buildContext([answers, folder]);
       var fileName = '_' + context.camelizedName + '.module.ts';
       var target = path.join(p.target, context.path);

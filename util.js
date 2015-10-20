@@ -18,7 +18,8 @@ module.exports = {
   modulePrompt: modulePrompt,
   convertModuleToPath: convertModuleToPath,
   convertPathToModule: convertPathToModule,
-  onSuccess: onSuccess
+  onSuccess: onSuccess,
+  onError: onError
 };
 
 /////////////////////////////////////////////////
@@ -39,9 +40,11 @@ function getPaths(templateName, files) {
 }
 
 function onSuccess(taskName, fileName) {
-  console.log('');
-  console.log(chalk.green('✔ ') + taskName + ' ' + chalk.green(fileName) + ' created');
-  console.log('');
+  console.log('[' + chalk.green(' ✔ ') + '] ' + taskName + ' ' + chalk.cyan(fileName) + ' created');
+}
+
+function onError(text) {
+  console.log('[' + chalk.red(' X ') + '] ' + text);
 }
 
 function folderPrompt($default, cb) {

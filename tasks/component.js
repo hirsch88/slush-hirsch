@@ -40,18 +40,21 @@ gulp.task('component', function (done) {
         var p = util.getPaths('component', ['ts', 'html']);
         var context = util.buildContext([answers, folder]);
         context.templateUrl = path.join('./app/', folder.namespace, context.camelizedName + '.component.html');
-        var fileName = context.camelizedName + '.component.ts';
+        var fileName = context.camelizedName + '.component';
+        console.log(fileName);
         var target = path.join(p.target, module, context.path);
-        console.log(target);
         context.module = module;
         gulp.src(p.source)
           .pipe(template(context))
-          .pipe(rename(fileName))
+          .pipe(rename(function (file) {
+            file.basename = fileName + file.basename.split('.')[file.basename.split('.').length - 1];
+          }))
           .pipe(conflict(target))
           .pipe(gulp.dest(target))
           .on('end', function () {
             done();
-            util.onSuccess('Component', path.join(target, fileName));
+            util.onSuccess('Component', path.join(target, fileName + '.ts'));
+            util.onSuccess('Component', path.join(target, fileName + '.html'));
           });
       });
     });

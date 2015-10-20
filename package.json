@@ -36,6 +36,7 @@
     "gulp-conflict": "^0.1.1",
     "gulp-install": "^0.1.4",
     "gulp-rename": "^1.2.0",
+    "gulp-task-listing": "^1.0.1",
     "gulp-template": "^0.1.1",
     "gulp-tsd": "0.0.4",
     "iniparser": "^1.0.5",
