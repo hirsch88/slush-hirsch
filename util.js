@@ -27,9 +27,13 @@ function getGulpConfig() {
   return require('./gulp.config.js');
 }
 
-function getPaths(templateName) {
+function getPaths(templateName, files) {
+  var source = [];
+  for (var i = 0; i < files.length; i++) {
+    source.push(path.join(__dirname, 'templates/' + templateName + '/**.' + files[i]));
+  }
   return {
-    source: path.join(__dirname, 'templates/' + templateName + '.ts'),
+    source: source,
     target: './src/app'
   };
 }

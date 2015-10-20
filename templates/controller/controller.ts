@@ -4,16 +4,16 @@ module <%= prefix %>.<%= module %>.<%= namespace %> {
     'use strict';
 
   // INTERFACE ////////////////////////////////////////////////////////////////////
-  interface I<%= capitalizedName %> {
+  interface I<%= capitalizedName %>Scope {
     method(param: string): string;
   }
 
 
-  // SERVICE ////////////////////////////////////////////////////////////////////
-  export class <%= capitalizedName %> implements I<%= capitalizedName %> {
+  // CONTROLLER ////////////////////////////////////////////////////////////////////
+  export class <%= capitalizedName %>Controller implements I<%= capitalizedName %>Scope {
     static $inject = [];
 
-    private field;
+    public field;
 
 
     constructor() {
@@ -33,7 +33,7 @@ module <%= prefix %>.<%= module %>.<%= namespace %> {
   }
 
   angular
-    .module(ID.<%= capitalizedName %>, [])
-    .service(ID.<%= capitalizedName %>, <%= capitalizedName %>);
+    .module(ID.<%= capitalizedName %>Controller, [])
+    .controller(ID.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller);
 
 }

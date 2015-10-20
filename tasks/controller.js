@@ -1,5 +1,5 @@
 /**
- * SERVICE
+ * CONTROLLER
  * -------------------------------------------------------------
  *
  * This task scaffolds a TypeScript Model
@@ -16,18 +16,19 @@ var gulp     = require('gulp'),
 
 var util = require('../util.js');
 
-gulp.task('service', function (done) {
+gulp.task('ctrl', ['controller']);
+gulp.task('controller', function (done) {
   var prompts = [{
     name: 'name',
-    message: 'What is the name of your service?'
+    message: 'What is the name of your controller?'
   }];
   //Ask
   inquirer.prompt(prompts, function (answers) {
     util.modulePrompt(function (module) {
-      util.folderPrompt('services', function (folder) {
-        var p = util.getPaths('service');
+      util.folderPrompt('controllers', function (folder) {
+        var p = util.getPaths('controller', ['ts']);
         var context = util.buildContext([answers, folder]);
-        var fileName = context.camelizedName + '.service.ts';
+        var fileName = context.camelizedName + '.controller.ts';
         var target = path.join(p.target, module, context.path);
         context.module = module;
         gulp.src(p.source)
@@ -37,7 +38,7 @@ gulp.task('service', function (done) {
           .pipe(gulp.dest(target))
           .on('end', function () {
             done();
-            util.onSuccess('Service', path.join(target, fileName));
+            util.onSuccess('Controller', path.join(target, fileName));
           });
       });
     });

@@ -26,7 +26,7 @@ gulp.task('module', function (done) {
     util.folderPrompt(answers.name, function (folder) {
       var p = util.getPaths('module');
       var context = util.buildContext([answers, folder]);
-      var fileName = '_' + context.capitalizedName + 'Module.ts';
+      var fileName = '_' + context.camelizedName + '.module.ts';
       var target = path.join(p.target, context.path);
       gulp.src(p.source)
         .pipe(template(context))

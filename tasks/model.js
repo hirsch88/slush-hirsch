@@ -29,10 +29,9 @@ gulp.task('model', function (done) {
     util.modulePrompt(function (module) {
       util.folderPrompt('models', function (folder) {
         jsonResponsePrompt(function (response) {
-          answers.name = answers.answers + 'Model';
           var p = util.getPaths('model');
           var context = util.buildContext([answers, folder]);
-          var fileName = context.capitalizedName + '.ts';
+          var fileName = context.camelizedName + '.model.ts';
           var target = path.join(p.target, module, context.path);
           context.module = module;
           context = buildModelProperties(context, response);
