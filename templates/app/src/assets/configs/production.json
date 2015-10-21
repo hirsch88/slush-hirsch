@@ -1,6 +1,6 @@
 {
   "environment": "production",
-  "baseUrl": "",
+  "backendUrl": "",
   "language": "en",
   "client_id": "",
   "client_secret": ""

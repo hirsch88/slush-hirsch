@@ -1,28 +1,28 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
-module <%= appPrefix %> {
+module my {
   'use strict';
 
   angular
-    .module('<%= appPrefix %>', [
+    .module('<%= prefix %>', [
       // AngularJS Libs
       'ngSanitize',
-      //'ngMessages',
-      //'ngAnimate',
+      'ngMessages',
+      'ngAnimate',
 
       // Third-Party Libs
-      //'pascalprecht.translate',
+      'pascalprecht.translate',
       'ui.router',
       //'angular-loading-bar',
 
       // Configs, middleware, run...
-      //'<%= appPrefix %>.core',
+      '<%= prefix %>.core',
 
       // Common components, services, filters...
-      //'<%= appPrefix %>.common',
+      '<%= prefix %>.common',
 
       // App modules with business logic
-      '<%= appPrefix %>.home',
+      '<%= prefix %>.home',
 
     ]);
 

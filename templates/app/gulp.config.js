@@ -1,7 +1,8 @@
 /**
  * Gulp Config
  * --------------------------------
- *
+ * This config stores all the gulp related infromation like pahts or
+ * ignored modules
  *
  */
 
@@ -27,10 +28,7 @@ module.exports = {
     main: 'index.html',
     mainTpl: 'index.tpl.html',
     assets: {
-      configDir: 'assets/config',
-      config: {
-        environmentsDir: 'assets/config/environments'
-      },
+      configDir: 'assets/configs',
       cssDir: 'assets/css',
       css: 'assets/css/**/*.css',
       lessDir: 'assets/less',
@@ -45,15 +43,16 @@ module.exports = {
       i18n: 'assets/i18n/**/*.json'
     },
     app: {
-      util: 'app/util.ts',
-      main: 'app/app.ts',
-      modules: 'app/**/_*Module.ts',
-      routes: 'app/**/*Routes.ts',
-      configs: 'app/**/*Config.ts',
-      constants: 'app/**/*.constant.ts',
-      services: 'app/**/*Service.ts',
-      directives: 'app/**/*Directive.ts',
-      scripts: 'app/**/*.ts',
+      bootstrap: 'app/bootstrap.js',
+      util: 'app/util.js',
+      main: 'app/app.js',
+      modules: 'app/**/_*.module.js',
+      routes: 'app/**/*.routes.js',
+      configs: 'app/**/*.config.js',
+      constants: 'app/**/*.constant.js',
+      services: 'app/**/*.service.js',
+      components: 'app/**/*.component.js',
+      scripts: 'app/**/*.js',
       templates: 'app/**/*.html',
       coreDir: 'app/core',
       commonDir: 'app/common',
@@ -77,11 +76,11 @@ module.exports = {
    * as a Grunt template, where the pairs are evaluated based on this very configuration object.
    */
   banner: '/**\n' +
-  ' * @name           <%= bannerAppName %>\n' +
-  ' * @description    <%= bannerAppDescription %>\n\n' +
-  ' * @version        <%= bannerAppVersion %>\n' +
-  ' * @author         <%= bannerAppAuthor %>\n' +
-  ' * @license        <%= bannerAppLicense %>\n' +
+  ' * @name           <%= name %>\n' +
+  ' * @description    <%= description %>\n\n' +
+  ' * @version        <%= version %>\n' +
+  ' * @author         <%= author %>\n' +
+  ' * @license        <%= licenses %>\n' +
   ' */\n',
 
   /**
@@ -93,6 +92,15 @@ module.exports = {
 
   ignoredBowerFiles: [
     'Materialize/bin/materialize.css'
+  ],
+
+  fonts: [
+    'src/lib/font-awesome/fonts/FontAwesome.otf',
+    'src/lib/font-awesome/fonts/fontawesome-webfont.eot',
+    'src/lib/font-awesome/fonts/fontawesome-webfont.svg',
+    'src/lib/font-awesome/fonts/fontawesome-webfont.ttf',
+    'src/lib/font-awesome/fonts/fontawesome-webfont.woff',
+    'src/lib/font-awesome/fonts/fontawesome-webfont.woff2'
   ]
 
 
