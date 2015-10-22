@@ -21,19 +21,15 @@ gulp.task('serve', ['build'], function () {
   });
 
   // Bower
-  gulp.watch('./bower.json', ['index', 'fonts', reload]);
-
-  // i18n
-  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.i18nDir, '*.json'), [reload]);
+  gulp.watch('./bower.json', ['index', 'fonts']);
 
   // SASS
-  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.sass), ['sass']);
+  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.sass), ['sass', reload]);
 
   // TypeScript
   gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.app.scripts.replace(/\.js$/, '.ts')), ['ts-compile', reload]);
 
   // Templates
-  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.app.templates), [reload]);
-  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.mainTpl), ['index', reload]);
+  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.mainTpl), ['index']);
 
 });
