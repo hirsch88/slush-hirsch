@@ -12,10 +12,12 @@ module <%= appPrefix %>.home.controllers {
 
   // CONTROLLER ////////////////////////////////////////////////////////////////////
   class HomeController implements IHomeScope {
-    static $inject = [];
+    static $inject = [
+      core.config.ID.AppConfig
+    ];
 
     // CONSTRUCTOR /////////////////////////////////////////////
-    constructor() {
+    constructor(private config: core.config.AppConfig) {
       this.init();
     }
 
@@ -25,13 +27,14 @@ module <%= appPrefix %>.home.controllers {
 
     // PRIVATE API ////////////////////////////////////////////
     private init() {
-      ;
+      console.log(this.config);
     }
 
   }
 
   angular
     .module(ID.HomeController, [
+      core.config.ID.AppConfig
     ])
     .controller(ID.HomeController, HomeController);
 }

@@ -64,6 +64,7 @@ gulp.task('default', function (done) {
 
       answers.appNameSlug = _.slugify(answers.appName);
       answers.Namespace = '${Namespace}';
+      answers.prefix = answers.appPrefix;
 
       answers.bannerAppName = '<%= name %>';
       answers.bannerAppDescription = '<%= description %>';

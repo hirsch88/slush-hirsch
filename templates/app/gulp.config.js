@@ -76,11 +76,11 @@ module.exports = {
    * as a Grunt template, where the pairs are evaluated based on this very configuration object.
    */
   banner: '/**\n' +
-  ' * @name           <%= name %>\n' +
-  ' * @description    <%= description %>\n\n' +
-  ' * @version        <%= version %>\n' +
-  ' * @author         <%= author %>\n' +
-  ' * @license        <%= licenses %>\n' +
+  ' * @name           <%= bannerAppName %>\n' +
+  ' * @description    <%= bannerAppDescription %>\n\n' +
+  ' * @version        <%= bannerAppVersion %>\n' +
+  ' * @author         <%= bannerAppAuthor %>\n' +
+  ' * @license        <%= bannerAppLicense %>\n' +
   ' */\n',
 
   /**
