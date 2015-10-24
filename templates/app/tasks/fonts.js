@@ -1,12 +1,5 @@
 'use strict';
 
-//var gulp = require('gulp');
-//var projectConfig = require(process.cwd() + '/project.config.js')();
-//var $ = require('gulp-load-plugins')({lazy: true});
-//var path = require('path');
-//var _ = require('lodash');
-
-
 var gulp       = require('gulp'),
     gulpConfig = require(process.cwd() + '/gulp.config.js'),
     gulpUtil   = require(process.cwd() + '/gulp.util.js'),

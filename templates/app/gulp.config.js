@@ -11,6 +11,21 @@
 module.exports = {
 
   /**
+   * TYPESCRIPT
+   * Defines the compiler configurations
+   */
+  typescript: {
+    noImplicitAny: false,
+    removeComments: true,
+    noEmitOnError: true,
+    preserveConstEnums: true,
+    sourceMap: false,
+    declaration: false,
+    noResolve: true,
+    target: 'es5'
+  },
+
+  /**
    * PATHS
    * Defines the app-structure of this project
    */

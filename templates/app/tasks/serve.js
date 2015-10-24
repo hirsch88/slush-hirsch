@@ -1,35 +1,44 @@
 'use strict';
 
 var gulp        = require('gulp'),
-    gulpConfig  = require(process.cwd() +'/gulp.config.js'),
+    gulpConfig  = require(process.cwd() + '/gulp.config.js'),
     browserSync = require('browser-sync'),
     reload      = browserSync.reload,
     path        = require('path');
 
-/**
- * SERVE
- * Creates a webserver and adds some watchers to automatically refresh your browser
- */
+var server = require('gulp-server-livereload');
+
+gulp.task('server', ['build'], function () {
+  startServer(true);
+});
+
 gulp.task('serve', ['build'], function () {
-  browserSync({
-    server: {
-      baseDir: gulpConfig.paths.srcDir,
-      index: gulpConfig.paths.main
-    },
-    open: false,
-    reloadDebounce: 300
-  });
+  startServer(false);
 
   // Bower
   gulp.watch('./bower.json', ['index', 'fonts']);
 
   // SASS
-  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.sass), ['sass', reload]);
+  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.sass), ['sass']);
 
   // TypeScript
-  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.app.scripts.replace(/\.js$/, '.ts')), ['ts-compile', reload]);
+  gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.app.scripts.replace(/\.js$/, '.ts')), ['ts-index', reload]);
 
   // Templates
   gulp.watch(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.mainTpl), ['index']);
 
 });
+
+
+function startServer(open) {
+  browserSync({
+    server: {
+      baseDir: gulpConfig.paths.srcDir,
+      index: gulpConfig.paths.main
+    },
+    open: open,
+    reloadDebounce: 300,
+    logLevel: "info",
+    logConnections: true
+  });
+}

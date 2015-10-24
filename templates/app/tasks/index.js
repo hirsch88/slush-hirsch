@@ -7,10 +7,16 @@ var gulp       = require('gulp'),
     _          = require('lodash'),
     $          = require('gulp-load-plugins')({lazy: true});
 
+gulp.task('index', ['ts-compile', 'sass'], function (done) {
+  buildIndex(done);
+});
 
-gulp.task('index', ['ts-compile', 'sass'], function () {
 
+gulp.task('ts-index', ['ts-compile'], function (done) {
+  buildIndex(done);
+});
 
+function buildIndex(done) {
   var source = [];
   source.push(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.css));
 
@@ -22,13 +28,19 @@ gulp.task('index', ['ts-compile', 'sass'], function () {
     return filePath.indexOf(gulpConfig.ignoredBowerFiles) < 0;
   });
 
-  return gulp
-    .src(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.mainTpl))
-    .pipe($.inject(gulp.src(bowerFiles, {read: false}), {name: 'bower', relative: true}))
-    .pipe($.inject(gulp.src(source), {relative: true}))
-    .pipe($.rename(gulpConfig.paths.main))
-    .pipe($.template(gulpUtil.getPkg()))
-    .pipe(gulp.dest(gulpConfig.paths.srcDir));
+  if (gulpUtil.errors.compile.length + gulpUtil.errors.lint.length + gulpUtil.errors.sass.length > 0) {
+    done();
+  } else {
+    gulp
+      .src(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.mainTpl))
+      .pipe($.inject(gulp.src(bowerFiles, {read: false}), {name: 'bower', relative: true}))
+      .pipe($.inject(gulp.src(source), {relative: true}))
+      .pipe($.rename(gulpConfig.paths.main))
+      .pipe($.template(gulpUtil.getPkg()))
+      .pipe(gulp.dest(gulpConfig.paths.srcDir))
+      .on('end', function () {
+        done();
+      });
+  }
+}
 
-
-});

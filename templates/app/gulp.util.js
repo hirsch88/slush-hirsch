@@ -7,13 +7,24 @@
 
 'use strict';
 
-var gulpConfig = require('./gulp.config.js'),
-    path       = require('path'),
-    bowerFiles = require('main-bower-files'),
-    wiredep    = require('wiredep');
+var gulp        = require('gulp'),
+    $           = require('gulp-load-plugins')({lazy: true}),
+    gulpConfig  = require('./gulp.config.js'),
+    path        = require('path'),
+    chalk       = require('chalk'),
+    bowerFiles  = require('main-bower-files'),
+    browserSync = require('browser-sync'),
+    wiredep     = require('wiredep');
 
 module.exports = {
 
+  errors: {
+    lint: [],
+    compile: [],
+    sass: []
+  },
+
+  buildErrorReporting: buildErrorReporting,
   onSuccess: onSuccess,
   onError: onError,
   onInfo: onInfo,
@@ -82,4 +93,18 @@ function onInfo(text) {
 
 function onError(text) {
   console.log('[' + chalk.red(' X ') + '] ' + text);
+}
+
+function buildErrorReporting(errors, done) {
+  gulp.src(gulpConfig.paths.taskDir + '/errors.html')
+    .pipe($.template(errors))
+    .pipe($.rename('index.html'))
+    .pipe(gulp.dest(gulpConfig.paths.srcDir))
+    .on('end', function () {
+      browserSync.reload();
+      onInfo('Error reporting is build');
+      if (done) {
+        done();
+      }
+    });
 }
