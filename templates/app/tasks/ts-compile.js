@@ -32,7 +32,7 @@ gulp.task('ts-compile', ['ts-lint'], function (done) {
       gulpUtil.onError('[ TS ] (TS' + err.diagnostic.code + ') ' + err.relativeFilename + '[' + err.startPosition.line + ', ' + err.startPosition.character + ']: ' + err.diagnostic.messageText);
       gulpUtil.errors.compile.push('(TS' + err.diagnostic.code + ') <i>' + err.relativeFilename + '[' + err.startPosition.line + ', ' + err.startPosition.character + ']: </i>' + err.diagnostic.messageText);
     })
-    .pipe($.concat(gulpUtil.getPkg().name + '.debug.js')) // You can use other plugins that also support gulp-sourcemaps
+    .pipe($.concat('app.debug.js')) // You can use other plugins that also support gulp-sourcemaps
     .pipe($.sourcemaps.write()) // Now the sourcemaps are added to the .js file
     .pipe(gulp.dest(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.appDir)))
     .on('end', function () {
