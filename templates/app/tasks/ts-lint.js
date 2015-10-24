@@ -10,6 +10,7 @@ var gulp       = require('gulp'),
  * Lints all .ts source files in the app.
  */
 gulp.task('ts-lint', function () {
+  gulpUtil.errors.lint = [];
   return gulp.src([
     gulpConfig.paths.srcDir + '/' + gulpConfig.paths.app.scripts.replace(/\.js$/, '.ts')
   ])

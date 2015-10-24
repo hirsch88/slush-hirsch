@@ -10,6 +10,7 @@ var gulp        = require('gulp'),
  * Lints and compiles all .ts source files in the app.
  */
 gulp.task('ts-compile', ['ts-lint'], function (done) {
+  gulpUtil.errors.compile = [];
   var tsconfig = gulpConfig.typescript;
   tsconfig.out = 'c3le-admin-panel';
 

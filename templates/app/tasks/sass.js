@@ -4,9 +4,7 @@ var gulp        = require('gulp'),
     gulpConfig  = require(process.cwd() + '/gulp.config.js'),
     gulpUtil    = require(process.cwd() + '/gulp.util.js'),
     $           = require('gulp-load-plugins')({lazy: true}),
-    path        = require('path'),
-    browserSync = require('browser-sync');
-var reload = browserSync.reload;
+    path        = require('path');
 
 /**
  * SASS
@@ -18,6 +16,7 @@ gulp.task('sass', function (done) {
   var mainSassFile = path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.sassMain);
   var mainCssDir = path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.cssDir);
   var cssFile = gulpUtil.getPkg().name + '.css';
+  gulpUtil.errors.sass = [];
 
   gulp
     .src(mainSassFile)

@@ -12,11 +12,12 @@ var gulp        = require('gulp'),
     gulpConfig  = require('./gulp.config.js'),
     path        = require('path'),
     chalk       = require('chalk'),
+    _           = require('lodash'),
     bowerFiles  = require('main-bower-files'),
     browserSync = require('browser-sync'),
     wiredep     = require('wiredep');
 
-module.exports = {
+var gulpUtil = {
 
   errors: {
     lint: [],
@@ -25,6 +26,7 @@ module.exports = {
   },
 
   buildErrorReporting: buildErrorReporting,
+  buildIndex: buildIndex,
   onSuccess: onSuccess,
   onError: onError,
   onInfo: onInfo,
@@ -33,6 +35,8 @@ module.exports = {
   getPkg: getPkg
 
 };
+
+module.exports = gulpUtil;
 
 function getPkg() {
   return require(path.join(process.cwd(), 'package.json'));
@@ -107,4 +111,34 @@ function buildErrorReporting(errors, done) {
         done();
       }
     });
+}
+
+function buildIndex(done) {
+  var source = [];
+  source.push(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.assets.css));
+
+  _.forEach(getNgFiles(), function (item) {
+    source.push(item);
+  });
+
+  var bowerFiles = getBowerFiles().files.main().filter(function (filePath) {
+    return filePath.indexOf(gulpConfig.ignoredBowerFiles) < 0;
+  });
+
+  if (gulpUtil.errors.compile.length + gulpUtil.errors.lint.length + gulpUtil.errors.sass.length > 0) {
+    done();
+  } else {
+    gulp
+      .src(path.join(gulpConfig.paths.srcDir, gulpConfig.paths.mainTpl))
+      .pipe($.inject(gulp.src(bowerFiles, {read: false}), {name: 'bower', relative: true}))
+      .pipe($.inject(gulp.src(source), {relative: true}))
+      .pipe($.rename(gulpConfig.paths.main))
+      .pipe($.template(gulpUtil.getPkg()))
+      .pipe(gulp.dest(gulpConfig.paths.srcDir))
+      .on('end', function () {
+        browserSync.reload();
+        onInfo('Index page is build');
+        done();
+      });
+  }
 }
