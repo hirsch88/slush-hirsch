@@ -67,6 +67,7 @@ module.exports = {
       constants: 'app/**/*.constant.js',
       services: 'app/**/*.service.js',
       components: 'app/**/*.component.js',
+      filters: 'app/**/*/filter.js',
       scripts: 'app/**/*.js',
       templates: 'app/**/*.html',
       coreDir: 'app/core',
