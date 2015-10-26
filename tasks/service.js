@@ -36,8 +36,10 @@ gulp.task('service', function (done) {
           .pipe(conflict(target))
           .pipe(gulp.dest(target))
           .on('end', function () {
-            done();
-            util.onSuccess('Service', path.join(target, fileName));
+            util.createServiceModule(target, context, function () {
+              done();
+              util.onSuccess('Service', path.join(target, fileName));
+            });
           });
       });
     });

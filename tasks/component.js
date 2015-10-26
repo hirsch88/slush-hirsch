@@ -52,9 +52,11 @@ gulp.task('component', function (done) {
           .pipe(conflict(target))
           .pipe(gulp.dest(target))
           .on('end', function () {
-            done();
-            util.onSuccess('Component', path.join(target, fileName + '.ts'));
-            util.onSuccess('Component', path.join(target, fileName + '.html'));
+            util.createServiceModule(target, context, function () {
+              done();
+              util.onSuccess('Component', path.join(target, fileName + '.ts'));
+              util.onSuccess('Component', path.join(target, fileName + '.html'));
+            });
           });
       });
     });
