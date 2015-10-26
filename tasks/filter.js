@@ -21,6 +21,7 @@ gulp.task('filter', function (done) {
     name: 'name',
     message: 'What is the name of your filter?'
   }];
+
   //Ask
   inquirer.prompt(prompts, function (answers) {
     util.modulePrompt(function (module) {
@@ -36,8 +37,10 @@ gulp.task('filter', function (done) {
           .pipe(conflict(target))
           .pipe(gulp.dest(target))
           .on('end', function () {
-            done();
-            util.onSuccess('Filter', path.join(target, fileName));
+            util.createServiceModule(target, context, function () {
+              done();
+              util.onSuccess('Filter', path.join(target, fileName));
+            });
           });
       });
     });

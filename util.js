@@ -4,7 +4,11 @@ var _        = require('underscore.string'),
     chalk    = require('chalk'),
     inquirer = require('inquirer'),
     fs       = require('fs'),
-    path     = require('path');
+    path     = require('path'),
+    gulp     = require('gulp'),
+    rename   = require('gulp-rename'),
+    conflict = require('gulp-conflict'),
+    template = require('gulp-template');
 
 module.exports = {
   getPkg: getPkg,
@@ -16,6 +20,7 @@ module.exports = {
   buildContext: buildContext,
   folderPrompt: folderPrompt,
   modulePrompt: modulePrompt,
+  createServiceModule: createServiceModule,
   convertModuleToPath: convertModuleToPath,
   convertPathToModule: convertPathToModule,
   onSuccess: onSuccess,
@@ -68,7 +73,7 @@ function folderPrompt($default, cb) {
 }
 
 
-function modulePrompt(cb) {
+function  modulePrompt(cb) {
   getModulesFromFileStructure(function (modules) {
     var $default = modules.indexOf('common');
     $default = $default < 0 ? 0 : $default;
@@ -83,6 +88,30 @@ function modulePrompt(cb) {
       cb(answers.choosenModule);
     });
   });
+}
+
+function createServiceModule(target, context, done){
+  var files = fs.readdirSync(target);
+  var fileName = '_' + context.namespace + '.module.ts';
+  var p = getPaths('serviceModule', ['ts']);
+  var modules = [];
+  var extensionRegex = /\.[^/.]+$/;
+
+  for (var i = 0; i < files.length; i++) {
+    console.log('dadada', files[i]);
+    if(files[i].indexOf('.module') === -1 && files[i].match(extensionRegex, '')[0].indexOf('.html') === -1) {
+      modules.push(_.camelize('_' + files[i].replace(extensionRegex, '').split('.').join('_')));
+    }
+  }
+
+  gulp.src(p.source)
+    .pipe(template(Object.assign(context, {modules: modules})))
+    .pipe(rename(fileName))
+    .pipe(conflict(target))
+    .pipe(gulp.dest(target))
+    .on('end', function () {
+      done();
+    });
 }
 
 function getModulesFromFileStructure(done) {
