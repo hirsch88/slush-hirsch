@@ -1,10 +1,10 @@
 'use strict';
 
-var gulp        = require('gulp'),
-    gulpConfig  = require(process.cwd() + '/gulp.config.js'),
-    gulpUtil    = require(process.cwd() + '/gulp.util.js'),
-    $           = require('gulp-load-plugins')({lazy: true}),
-    path        = require('path');
+var gulp       = require('gulp'),
+    gulpConfig = require(process.cwd() + '/gulp.config.js'),
+    gulpUtil   = require(process.cwd() + '/gulp.util.js'),
+    $          = require('gulp-load-plugins')({lazy: true}),
+    path       = require('path');
 /**
  * TS
  * Lints and compiles all .ts source files in the app.
@@ -14,10 +14,12 @@ gulp.task('ts-compile', ['ts-lint'], function (done) {
   var tsconfig = gulpConfig.typescript;
   tsconfig.out = 'c3le-admin-panel';
 
-  var tsResult = gulp.src([
-    gulpConfig.paths.srcDir + '/' + gulpConfig.paths.app.scripts.replace(/\.js$/, '.ts'),
-    'typings/**/*.d.ts'
-  ], {
+  var scripts = gulpUtil.getNgFiles().map(function (path) {
+    return path.replace(/\.js$/, '.ts');
+  });
+  scripts.push('typings/**/*.d.ts');
+
+  var tsResult = gulp.src(scripts, {
     base: '.'
   })
     .pipe($.sourcemaps.init()) // This means sourcemaps will be generated
