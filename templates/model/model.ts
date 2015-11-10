@@ -20,7 +20,7 @@ module app.<%= namespace %> {
     //====================================================================================================
     public static IID: string = 'app.<%= namespace %>.<%= capitalizedName %>Model';
 
-    public static EVENTS: IModelEvents = <IModelEvents>{
+    public static EVENTS: I<%= capitalizedName %>ModelEvents = <I<%= capitalizedName %>ModelEvents>{
       CREATED:    <%= capitalizedName %>Model.IID + '.events.created',
       UPDATED:    <%= capitalizedName %>Model.IID + '.events.updated',
       DESTROYED:  <%= capitalizedName %>Model.IID + '.events.destroyed'
