@@ -27,6 +27,10 @@ module app.<%= namespace %> {
       DESTROYED: <%= capitalizedName %>Model.IID + '.events.destroyed'
     };
 
+    public static ROUTES: I<%= capitalizedName %>ModelRoutes = <I<%= capitalizedName %>ModelRoutes>{
+      MAIN: '/<%= camelizedName %>'
+    }
+
     public static DEFAULTS: I<%= capitalizedName %>ModelBackend = <I<%= capitalizedName %>ModelBackend> {<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
       <%= modelProperties[i].inAppName %>: undefined<% if(i < modelProperties.length-1){ %>,<% } %><% } %>
     }
@@ -34,7 +38,6 @@ module app.<%= namespace %> {
     //region Public Variables
     //====================================================================================================<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
     <%= modelProperties[i].inAppName %>: <%= modelProperties[i].type %>;<% } %>
-
     //endregion
     //region Public Static Api
     //====================================================================================================
@@ -96,8 +99,8 @@ module app.<%= namespace %> {
     return factory;
   };
   <%= capitalizedName %>ModelFactory.$inject = <any>[
-    services.utils.IID.HttpUtilService,
-    services.utils.IID.EventHandlerUtilService
+    services.utils.IID.EventHandlerUtilService,
+    services.utils.IID.HttpUtilService
   ];
   //endregion
 

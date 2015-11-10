@@ -19,29 +19,29 @@ module app.<%= namespace %> {
    */
   export interface I<%= capitalizedName %>ModelStatic {
     /**
-    * Gives the model a Independent and Identically Distributed name
-    */
+     * Gives the model a Independent and Identically Distributed name
+     */
     IID: string;
     /**
-    * Defines the events for this model
-    */
+     * Defines the events for this model
+     */
     EVENTS: I<%= capitalizedName %>ModelEvents;
     /**
-    * This static variable stores the defaults
-    */
+     * This static variable stores the defaults
+     */
     DEFAULTS: I<%= capitalizedName %>ModelBackend;
     /**
-    * Creates and returns a new Model instance
-    */
+     * Creates and returns a new Model instance
+     */
     new (any): I<%= capitalizedName %>Model;
   }
 
   /**
-  * @name I<%= capitalizedName %>Model
-  * @description
-  * Defines the data structure of the model and
-  * some behaviour methods
-  */
+   * @name I<%= capitalizedName %>Model
+   * @description
+   * Defines the data structure of the model and
+   * some behaviour methods
+   */
   export interface I<%= capitalizedName %>Model {<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
     <%= modelProperties[i].inAppName %>?: <%= modelProperties[i].type %>;<% } %>
 
@@ -50,20 +50,20 @@ module app.<%= namespace %> {
   }
 
   /**
-  * @name I<%= capitalizedName %>ModelBackend
-  * @description
-  * Defines the backend structure
-  */
+   * @name I<%= capitalizedName %>ModelBackend
+   * @description
+   * Defines the backend structure
+   */
   export interface I<%= capitalizedName %>ModelBackend {<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
     <%= modelProperties[i].inApiName %>?: <% if (modelProperties[i].type === 'moment.Moment') { %>string;<% } else {%><%=modelProperties[i].type %>;<% } %><% } %>
   }
 
   /**
-  * @name I<%= capitalizedName %>ModelEvents
-  * @description
-  * This interface defines the model events which can
-  * be listend at
-  */
+   * @name I<%= capitalizedName %>ModelEvents
+   * @description
+   * This interface defines the model events which can
+   * be listend at
+   */
   export interface I<%= capitalizedName %>ModelEvents {
     CREATED: string;
     UPDATED: string;
@@ -71,11 +71,21 @@ module app.<%= namespace %> {
   }
 
   /**
-  * @name I<%= capitalizedName %>ModelFactory
-  * @description
-  * Defines the model factory. This is used to access the model
-  * throw the angular system
-  */
+   * @name I<%= capitalizedName %>ModelRoutes
+   * @description
+   * This interface defines the model routes to speak
+   * with the backend api
+   */
+  export interface I<%= capitalizedName %>ModelRoutes {
+    MAIN: string;
+  }
+
+  /**
+   * @name I<%= capitalizedName %>ModelFactory
+   * @description
+   * Defines the model factory. This is used to access the model
+   * throw the angular system
+   */
   export interface I<%= capitalizedName %>ModelFactory {
       getModel(): I<%= capitalizedName %>ModelStatic;
       create(data ?): I<%= capitalizedName %>Model;
