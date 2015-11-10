@@ -9,7 +9,8 @@ module app.<%= namespace %> {
   'use strict';
 
   // Global Services
-  //var service;
+  let httpUtilService: services.utils.IHttpUtilService,
+      eventHandlerUtilService: services.utils.IEventHandlerUtilService;
 
   /**
    * @name <%= capitalizedName %>Model
@@ -82,27 +83,26 @@ module app.<%= namespace %> {
 
   //region Model Factory
   //===========================================================================================
-  var <%= capitalizedName %>ModelFactory = (_eventHandlerUtil: services.utils.EventHandlerUtil,
-  _<%= camelizedName %>RestService: services.rest.<%= capitalizedName %>RestService) => {
+  var <%= capitalizedName %>ModelFactory = (_eventHandlerUtilService: services.utils.IEventHandlerUtilService,
+    _httpUtilService: services.utils.IHttpUtilService) => {
     // Sets global var with the needed services
-    eventHandlerUtil = _eventHandlerUtilService;
-    <%= camelizedName %>RestService = _<%= camelizedName %>RestService;
+    eventHandlerUtilService = _eventHandlerUtilService;
+    httpUtilService = _httpUtilService;
     // Defines the factorys output
-    var factory: I<%= capitalizedName %>ModelFactory = {
-      getModel: () => <I<%= capitalizedName %>ModelStatic>I<%= capitalizedName %>Model,
+    let factory: I<%= capitalizedName %>ModelFactory = {
+      getModel: () => <I<%= capitalizedName %>ModelStatic><%= capitalizedName %>Model,
       create: (data?) => new <%= capitalizedName %>Model(data)
     };
     return factory;
   };
   <%= capitalizedName %>ModelFactory.$inject = <any>[
-    services.rest.IDD.<%= capitalizedName %>RestService,
-    services.utils.IDD.EventHandlerUtil
+    services.utils.IID.HttpUtilService,
+    services.utils.IID.EventHandlerUtilService
   ];
   //endregion
 
   angular
     .module(Namespace)
-    .factory(IDD.<%= capitalizedName %>ModelFactory, <%= capitalizedName %>ModelFactory);
-
+    .factory(IID.<%= capitalizedName %>ModelFactory, <%= capitalizedName %>ModelFactory);
 
 }

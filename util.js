@@ -146,7 +146,7 @@ function buildContext(arr) {
     }
   }
 
-  context.description = context.description || '//TODO';
+  context.description = context.description || 'TODO';
   context.date = moment().format('DD-MM-YYYY');
   context.slugedName = _.slugify(context.name);
   context.capitalizedName = _.capitalize(context.name);
