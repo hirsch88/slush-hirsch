@@ -21,9 +21,9 @@ module app.<%= namespace %> {
     public static IID: string = 'app.<%= namespace %>.<%= capitalizedName %>Model';
 
     public static EVENTS: I<%= capitalizedName %>ModelEvents = <I<%= capitalizedName %>ModelEvents>{
-      CREATED:    <%= capitalizedName %>Model.IID + '.events.created',
-      UPDATED:    <%= capitalizedName %>Model.IID + '.events.updated',
-      DESTROYED:  <%= capitalizedName %>Model.IID + '.events.destroyed'
+      CREATED: <%= capitalizedName %>Model.IID + '.events.created',
+      UPDATED: <%= capitalizedName %>Model.IID + '.events.updated',
+      DESTROYED: <%= capitalizedName %>Model.IID + '.events.destroyed'
     };
 
     public static DEFAULTS: I<%= capitalizedName %>ModelBackend = <I<%= capitalizedName %>ModelBackend> {<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
