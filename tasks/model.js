@@ -24,7 +24,7 @@ gulp.task('model', function (done) {
     message: 'What is the name of your model?'
   }, {
       name: 'description',
-      message: 'Please describe your new model.'
+      message: 'Please describe your new model:'
     }];
 
   //Ask

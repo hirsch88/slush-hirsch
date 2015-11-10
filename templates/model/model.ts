@@ -27,7 +27,7 @@ module app.<%= namespace %> {
     };
 
     public static DEFAULTS: I<%= capitalizedName %>ModelBackend = <I<%= capitalizedName %>ModelBackend> {<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
-      <%= modelProperties[i].inAppName %>: undefined,<% } %>
+      <%= modelProperties[i].inAppName %>: undefined<% if(i < modelProperties.length-1){ %>,<% } %><% } %>
     }
     //endregion
     //region Public Variables
