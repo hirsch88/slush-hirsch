@@ -98,7 +98,7 @@ function modulePrompt(cb) {
 
 function getModulesFromFileStructure(done) {
   var config = getGulpConfig();
-  fs.readdir('./src/app', function (err, files) {
+  fs.readdir('./src/app/modules', function (err, files) {
     if (files) {
       var modules = [];
       for (var i = 0; i < files.length; i++) {

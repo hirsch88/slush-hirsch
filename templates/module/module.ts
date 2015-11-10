@@ -4,6 +4,9 @@
  * @name <%= capitalizedName %>Module
  * @author <%= gitConfig.user.name %> (<%= gitConfig.user.email %>)
  * @date <%= date %>
+ *
+ * @description
+ * <%= description %>
  */
 module app.<%= namespace %> {
   'use strict';
