@@ -1,13 +1,23 @@
-/// <reference path="../../../<%= typingNesting %>typings/tsd.d.ts" />
+/// <reference path="../../../../<%= typingNesting %>typings/tsd.d.ts" />
 
-module <%= prefix %>.<%= namespace %> {
+/**
+ * @name <%= capitalizedName %>Module
+ * @author <%= gitConfig.user.name %> (<%= gitConfig.user.email %>)
+ * @date <%= date %>
+ *
+ * @description
+ * <%= description %>
+ */
+module app.<%= namespace %> {
   'use strict';
 
-  export var Namespace = '<%= prefix %>.<%= namespace %>';
+  export const Namespace = 'app.<%= namespace %>';
 
-  export var ID = {};
+  export const IID = {};
 
   angular
-    .module(Namespace, []);
+    .module(Namespace, [
+
+    ]);
 
 }

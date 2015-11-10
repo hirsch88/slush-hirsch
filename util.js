@@ -98,7 +98,7 @@ function modulePrompt(cb) {
 
 function getModulesFromFileStructure(done) {
   var config = getGulpConfig();
-  fs.readdir('./src/app', function (err, files) {
+  fs.readdir('./src/app/modules', function (err, files) {
     if (files) {
       var modules = [];
       for (var i = 0; i < files.length; i++) {
@@ -146,7 +146,7 @@ function buildContext(arr) {
     }
   }
 
-  context.description = context.description || '//TODO';
+  context.description = context.description || 'TODO';
   context.date = moment().format('DD-MM-YYYY');
   context.slugedName = _.slugify(context.name);
   context.capitalizedName = _.capitalize(context.name);

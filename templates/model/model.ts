@@ -9,7 +9,8 @@ module app.<%= namespace %> {
   'use strict';
 
   // Global Services
-  //var service;
+  let httpUtilService: services.utils.IHttpUtilService,
+      eventHandlerUtilService: services.utils.IEventHandlerUtilService;
 
   /**
    * @name <%= capitalizedName %>Model
@@ -20,11 +21,15 @@ module app.<%= namespace %> {
     //====================================================================================================
     public static IID: string = 'app.<%= namespace %>.<%= capitalizedName %>Model';
 
-    public static EVENTS: IModelEvents = <IModelEvents>{
-      CREATED:    <%= capitalizedName %>Model.IID + '.events.created',
-      UPDATED:    <%= capitalizedName %>Model.IID + '.events.updated',
-      DESTROYED:  <%= capitalizedName %>Model.IID + '.events.destroyed'
+    public static EVENTS: I<%= capitalizedName %>ModelEvents = <I<%= capitalizedName %>ModelEvents>{
+      CREATED: <%= capitalizedName %>Model.IID + '.events.created',
+      UPDATED: <%= capitalizedName %>Model.IID + '.events.updated',
+      DESTROYED: <%= capitalizedName %>Model.IID + '.events.destroyed'
     };
+
+    public static ROUTES: I<%= capitalizedName %>ModelRoutes = <I<%= capitalizedName %>ModelRoutes>{
+      MAIN: '/<%= camelizedName %>'
+    }
 
     public static DEFAULTS: I<%= capitalizedName %>ModelBackend = <I<%= capitalizedName %>ModelBackend> {<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
       <%= modelProperties[i].inAppName %>: undefined<% if(i < modelProperties.length-1){ %>,<% } %><% } %>
@@ -33,7 +38,6 @@ module app.<%= namespace %> {
     //region Public Variables
     //====================================================================================================<% for (var i = 0, p = modelProperties.length; i < p; i++) { %>
     <%= modelProperties[i].inAppName %>: <%= modelProperties[i].type %>;<% } %>
-
     //endregion
     //region Public Static Api
     //====================================================================================================
@@ -82,27 +86,26 @@ module app.<%= namespace %> {
 
   //region Model Factory
   //===========================================================================================
-  var <%= capitalizedName %>ModelFactory = (_eventHandlerUtil: services.utils.EventHandlerUtil,
-  _<%= camelizedName %>RestService: services.rest.<%= capitalizedName %>RestService) => {
+  var <%= capitalizedName %>ModelFactory = (_eventHandlerUtilService: services.utils.IEventHandlerUtilService,
+    _httpUtilService: services.utils.IHttpUtilService) => {
     // Sets global var with the needed services
-    eventHandlerUtil = _eventHandlerUtilService;
-    <%= camelizedName %>RestService = _<%= camelizedName %>RestService;
+    eventHandlerUtilService = _eventHandlerUtilService;
+    httpUtilService = _httpUtilService;
     // Defines the factorys output
-    var factory: I<%= capitalizedName %>ModelFactory = {
-      getModel: () => <I<%= capitalizedName %>ModelStatic>I<%= capitalizedName %>Model,
+    let factory: I<%= capitalizedName %>ModelFactory = {
+      getModel: () => <I<%= capitalizedName %>ModelStatic><%= capitalizedName %>Model,
       create: (data?) => new <%= capitalizedName %>Model(data)
     };
     return factory;
   };
   <%= capitalizedName %>ModelFactory.$inject = <any>[
-    services.rest.IDD.<%= capitalizedName %>RestService,
-    services.utils.IDD.EventHandlerUtil
+    services.utils.IID.EventHandlerUtilService,
+    services.utils.IID.HttpUtilService
   ];
   //endregion
 
   angular
     .module(Namespace)
-    .factory(IDD.<%= capitalizedName %>ModelFactory, <%= capitalizedName %>ModelFactory);
-
+    .factory(IID.<%= capitalizedName %>ModelFactory, <%= capitalizedName %>ModelFactory);
 
 }
