@@ -1,13 +1,16 @@
 'use strict';
 
-var _        = require('underscore.string'),
-    chalk    = require('chalk'),
-    inquirer = require('inquirer'),
-    fs       = require('fs'),
-    path     = require('path');
+var _         = require('underscore.string'),
+    chalk     = require('chalk'),
+    inquirer  = require('inquirer'),
+    fs        = require('fs'),
+    path      = require('path'),
+    gitConfig = require('git-config'),
+    moment    = require('moment');
 
 module.exports = {
   getPkg: getPkg,
+  getGitConfig: getGitConfig,
   getPaths: getPaths,
   getGulpConfig: getGulpConfig,
   format: format,
@@ -24,8 +27,16 @@ module.exports = {
 
 /////////////////////////////////////////////////
 
+function getGitConfig(done) {
+  gitConfig(function (err, config) {
+    done({
+      gitConfig: config
+    });
+  });
+}
+
 function getGulpConfig() {
-  return require('./gulp.config.js');
+  return require(path.join(process.cwd(), 'gulp.config.js'));
 }
 
 function getPaths(templateName, files) {
@@ -116,10 +127,6 @@ function getPkg() {
   return require(path.join(process.cwd(), 'package.json'));
 }
 
-function getGulpConfig() {
-  return require(path.join(process.cwd(), 'gulp.config.js'));
-}
-
 function buildContext(arr) {
   var context = {};
   context.typingNesting = '';
@@ -139,6 +146,8 @@ function buildContext(arr) {
     }
   }
 
+  context.description = context.description || '//TODO';
+  context.date = moment().format('DD-MM-YYYY');
   context.slugedName = _.slugify(context.name);
   context.capitalizedName = _.capitalize(context.name);
   context.camelizedName = _.camelize(context.name);

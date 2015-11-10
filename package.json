@@ -31,6 +31,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "fs": "0.0.2",
+    "git-config": "0.0.7",
     "glob": "^4.4.0",
     "gulp": "^3.6.2",
     "gulp-conflict": "^0.1.1",
@@ -42,6 +43,7 @@
     "iniparser": "^1.0.5",
     "inquirer": "^0.8.0",
     "lodash": "^3.9.3",
+    "moment": "^2.10.6",
     "path": "^0.11.14",
     "require-dir": "^0.3.0",
     "slush": ">=1.0.0",

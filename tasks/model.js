@@ -2,57 +2,87 @@
  * MODEL
  * -------------------------------------------------------------
  *
- * This task scaffolds a TypeScript Model
+ * This task scaffolds a TypeScript Model with his interfaces
  */
 'use strict';
 
-var gulp     = require('gulp'),
-    conflict = require('gulp-conflict'),
-    template = require('gulp-template'),
-    rename   = require('gulp-rename'),
-    _        = require('underscore.string'),
-    lodash   = require('lodash'),
-    chalk    = require('chalk'),
-    inquirer = require('inquirer'),
-    fs       = require('fs'),
-    path     = require('path');
-
-var util = require('../util.js');
+var gulp = require('gulp'),
+  conflict = require('gulp-conflict'),
+  template = require('gulp-template'),
+  rename = require('gulp-rename'),
+  _ = require('underscore.string'),
+  lodash = require('lodash'),
+  chalk = require('chalk'),
+  inquirer = require('inquirer'),
+  fs = require('fs'),
+  path = require('path'),
+  util = require('../util.js');
 
 gulp.task('model', function (done) {
   var prompts = [{
     name: 'name',
     message: 'What is the name of your model?'
-  }];
+  }, {
+      name: 'description',
+      message: 'Please describe your new model.'
+    }];
+
   //Ask
   inquirer.prompt(prompts, function (answers) {
-    util.modulePrompt(function (module) {
-      util.folderPrompt('models', function (folder) {
-        jsonResponsePrompt(done, function (response) {
+    util.folderPrompt('models', function (folder) {
+      jsonDtosPrompt(done, function (response) {
+        util.getGitConfig(function (gitConfig) {
+
+          // Build Context and Paths
           var p = util.getPaths('model', ['ts']);
-          var context = util.buildContext([answers, folder]);
-          var fileName = context.camelizedName + '.model.ts';
-          var target = path.join(p.target, module, context.path);
-          context.module = module;
+          var context = util.buildContext([answers, folder, gitConfig]);
           context = buildModelProperties(context, response);
-          gulp.src(p.source)
-            .pipe(template(context))
-            .pipe(rename(fileName))
-            .pipe(conflict(target))
-            .pipe(gulp.dest(target))
-            .on('end', function () {
+          var target = path.join(p.target, context.path);
+
+          // Generators
+          generateModel(target, context, function () {
+            generateModelInterface(target, context, function () {
               done();
-              util.onSuccess('Model', path.join(target, fileName));
-            });
+            })
+          });
+
         });
       });
     });
   });
 });
 
+function generateModel(target, context, done) {
+  var fileName = context.capitalizedName + 'Model.ts';
+  var sourceClass = path.join(__dirname, '../templates/model/Model.ts');
+  gulp.src(sourceClass)
+    .pipe(template(context))
+    .pipe(rename(fileName))
+    .pipe(conflict(target))
+    .pipe(gulp.dest(target))
+    .on('end', function () {
+      util.onSuccess('Model', path.join(target, fileName));
+      done();
+    });
+}
+
+function generateModelInterface(target, context, done) {
+  var fileName = 'I' + context.capitalizedName + 'Model.ts';
+  var sourceClass = path.join(__dirname, '../templates/model/IModel.ts');
+  gulp.src(sourceClass)
+    .pipe(template(context))
+    .pipe(rename(fileName))
+    .pipe(conflict(target))
+    .pipe(gulp.dest(target))
+    .on('end', function () {
+      util.onSuccess('Model', path.join(target, fileName));
+      done();
+    });
+}
+
 function buildModelProperties(ctx, res) {
   console.log('');
-  var file = './src/assets/responses/' + res + '.json';
+  var file = './dtos/' + res + '.json';
   var obj = JSON.parse(fs.readFileSync(file, 'utf8'));
   var modelProperties = [];
   for (var key in obj) {
@@ -82,10 +112,10 @@ function buildModelProperties(ctx, res) {
   return ctx;
 }
 
-function jsonResponsePrompt(stop, done) {
-  readJsonRespones(function (jsons) {
+function jsonDtosPrompt(stop, done) {
+  readJsonDtosRespones(function (jsons) {
     if (jsons.length === 0) {
-      util.onError('Please place a json response in to the assets/response folder');
+      util.onError('Please place a json response in to the ./dtos folder');
       stop();
     } else {
       var prompts = [{
@@ -102,8 +132,8 @@ function jsonResponsePrompt(stop, done) {
   });
 }
 
-function readJsonRespones(done) {
-  fs.readdir('./src/assets/responses', function (err, files) {
+function readJsonDtosRespones(done) {
+  fs.readdir('./dtos', function (err, files) {
     if (files) {
       files = files.filter(function (file) {
         var ext = file.split('.')[file.split('.').length - 1];
@@ -116,4 +146,5 @@ function readJsonRespones(done) {
       done([]);
     }
   });
+
 }
