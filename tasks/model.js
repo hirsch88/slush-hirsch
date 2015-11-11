@@ -19,13 +19,15 @@ var gulp = require('gulp'),
   util = require('../util.js');
 
 gulp.task('model', function (done) {
-  var prompts = [{
-    name: 'name',
-    message: 'What is the name of your model?'
-  }, {
+  var prompts = [
+    {
+      name: 'name',
+      message: 'What is the name of your model?'
+    }, {
       name: 'description',
       message: 'Please describe your new model:'
-    }];
+    }
+  ];
 
   //Ask
   inquirer.prompt(prompts, function (answers) {

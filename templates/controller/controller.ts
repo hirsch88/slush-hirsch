@@ -1,39 +1,61 @@
 /// <reference path="../../../../<%= typingNesting %>typings/tsd.d.ts"/>
 
-module <%= prefix %>.<%= module %>.<%= namespace %> {
+/**
+ * @name I<%= capitalizedName %>Model
+ * @author <%= gitConfig.user.name %> (<%= gitConfig.user.email %>)
+ * @date <%= date %>
+ *
+ * @description
+ * <%= description %>
+ */
+module app.<%= namespace %> {
     'use strict';
 
-  // INTERFACE ////////////////////////////////////////////////////////////////////
+  /**
+   * @name I<%= capitalizedName %>Scope
+   */
   interface I<%= capitalizedName %>Scope {
     method(param: string): string;
   }
 
-
-  // CONTROLLER ////////////////////////////////////////////////////////////////////
-  export class <%= capitalizedName %>Controller implements I<%= capitalizedName %>Scope {
-    static $inject = [];
+  /**
+   * @name <%= capitalizedName %>Controller
+   */
+  export class <%= capitalizedName %>Controller extends helpers.ViewController implements I<%= capitalizedName %>Scope{
+    static $inject = [
+      '$scope',
+      services.utils.IID.EventHandlerUtilService
+    ];
 
     public field;
 
-
-    constructor() {
-      this.field = 'value';
+    constructor($scope, eventHandlerUtil) {
+      super($scope, eventHandlerUtil);
+      this.init();
     }
 
-
-    // PUBLIC API /////////////////////////////////////////////
-    method(param: string) {
+    //region Public Methods
+    //====================================================================================================
+    public method(param: string) {
       return param;
     }
+    //endregion
+    //region Private Methods
+    //====================================================================================================
+    private init() {
+      this.events();
+    }
 
-
-    // PRIVATE API ////////////////////////////////////////////
-
+    private events() {
+      this.addListener('event-key', (e) => { alert('Event fired!'); });
+      this.fireEvent('event-key', { name: 'event-test' });
+    }
+    //endregion
 
   }
 
   angular
-    .module(ID.<%= capitalizedName %>Controller, [])
-    .controller(ID.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller);
+    .module(Namespace)
+    .controller(IDD.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller);
 
 }
