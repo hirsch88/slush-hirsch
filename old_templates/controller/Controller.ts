@@ -1,7 +1,7 @@
-/// <reference path="../../../../<%= typingNesting %>typings/tsd.d.ts"/>
+/// <reference path="../../../../<%= typingNesting %>typings/tsd.d.ts" />
 
 /**
- * @name I<%= capitalizedName %>Model
+ * @name I<%= capitalizedName %>Controller
  * @author <%= gitConfig.user.name %> (<%= gitConfig.user.email %>)
  * @date <%= date %>
  *
@@ -56,6 +56,6 @@ module app.<%= namespace %> {
 
   angular
     .module(Namespace)
-    .controller(IDD.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller);
+    .controller(IID.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller);
 
 }

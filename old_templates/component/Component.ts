@@ -1,9 +1,10 @@
 /// <reference path="../../../../<%= typingNesting %>typings/tsd.d.ts"/>
 
-module <%= prefix %>.<%= module %>.<%= namespace %> {
+module app.<%= namespace %> {
     'use strict';
 
-  // DIRECTIVE ////////////////////////////////////////////////////////////////////
+  //region Directive Class
+  //====================================================================================================
   class <%= capitalizedName %>Directive implements angular.IDirective {
     restrict = 'E';
     templateUrl = '<%= templateUrl %>';<% if (hasController) { %>
@@ -17,14 +18,14 @@ module <%= prefix %>.<%= module %>.<%= namespace %> {
        controller: <%= capitalizedName %>Controller<% } %>) => {
         // TODO: link logic
       };<% } %>
-  }<% if (hasController) { %>
-
-
-  // INTERFACE ////////////////////////////////////////////////////////////////////
+  }
+  //endregion
+  <% if (hasController) { %>
+  //region Directive Controller
+  //====================================================================================================
   export interface I<%= capitalizedName %>Scope {
   }
 
-  // CONTROLLER ////////////////////////////////////////////////////////////////////
   class <%= capitalizedName %>Controller implements I<%= capitalizedName %>Scope {
     static $inject = [];
 
@@ -32,17 +33,22 @@ module <%= prefix %>.<%= module %>.<%= namespace %> {
       // TODO
     }
 
-    // PUBLIC API /////////////////////////////////////////////
+    //region Public Api
+    //====================================================================================================
 
+    //endregion
+    //region Private Api
+    //====================================================================================================
 
-    // PRIVATE API /////////////////////////////////////////////
+    //endregion
 
-
-  }<% } %>
+  }
+  //endregion
+  <% } %>
 
   angular
-    .module(ID.<%= capitalizedName %>, [])
+    .module(Namespace)
     .directive('<%= prefix %><%= capitalizedName %>', () => new <%= capitalizedName %>Directive())<% if (hasController) { %>
-    .controller(ID.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller)<% } %>;
+    .controller(IID.<%= capitalizedName %>Controller, <%= capitalizedName %>Controller)<% } %>;
 
 }

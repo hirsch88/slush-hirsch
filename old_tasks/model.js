@@ -90,6 +90,8 @@ function buildModelProperties(ctx, res) {
   for (var key in obj) {
     var regExDate = /^((((19|[2-9]\d)\d{2})[\/\.-](0[13578]|1[02])[\/\.-](0[1-9]|[12]\d|3[01])\s(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]))|(((19|[2-9]\d)\d{2})[\/\.-](0[13456789]|1[012])[\/\.-](0[1-9]|[12]\d|30)\s(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]))|(((19|[2-9]\d)\d{2})[\/\.-](02)[\/\.-](0[1-9]|1\d|2[0-8])\s(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))[\/\.-](02)[\/\.-](29)\s(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])))$/g;
     var type = 'any';
+    var isObject = false;
+    var isArray= false;
     if (lodash.isString(obj[key])) {
       type = 'string';
     }
@@ -102,11 +104,21 @@ function buildModelProperties(ctx, res) {
     if (regExDate.test(obj[key])) {
       type = 'moment.Moment';
     }
+    if (lodash.isObject(obj[key])) {
+      isObject = true;
+      type = 'I' + _.capitalize(key) + 'Model';
+    }
+    if (lodash.isArray(obj[key])) {
+      isArray = true;
+      type = 'I' + _.capitalize(key) + 'Model[]';
+    }
     console.log(chalk.blue(key) + ': ' + chalk.bold.red(type));
     modelProperties.push({
       inApiName: key,
       inAppName: _.camelize(key),
-      type: type
+      type: type,
+      isObject: isObject,
+      isArray: isArray
     });
   }
   console.log('');

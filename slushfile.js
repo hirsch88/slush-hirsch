@@ -9,4 +9,13 @@
 'use strict';
 
 var requireDir = require('require-dir');
-requireDir('./tasks');
+requireDir('./service');
+requireDir('./filter');
+requireDir('./model');
+
+/**
+ * The help tasks lists all the generators
+*/
+var gulp = require('gulp');
+var taskListing = require('gulp-task-listing');
+gulp.task('help', taskListing);
