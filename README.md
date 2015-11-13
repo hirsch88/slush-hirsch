@@ -17,6 +17,7 @@ $ npm install -g slush-hirsch
 
 ### Usage
 
+#### Scaffolding a new Project (in-construction)
 Create a new folder for your project:
 
 ```bash
@@ -28,6 +29,37 @@ Run the generator from within the new folder:
 ```bash
 $ cd my-slush-hirsch && slush hirsch
 ```
+
+#### Template Generatros
+Run the template generators from within your project root folder:
+
+**Component**: Creates a new component(directive) for your project.
+```bash
+$ slush hirsch:component
+```
+
+**Filter**: Creates a new filter for your project.
+```bash
+$ slush hirsch:filter
+```
+
+**Controller**: Creates a new controller for your project.
+```bash
+$ slush hirsch:controller
+// or
+$ slush hirsch:ctrl
+```
+
+**Model**: Creates a new model for your project.
+```bash
+$ slush hirsch:controller
+```
+
+**View**: Creates a new view module with routes config and a first view with controller.
+```bash
+$ slush hirsch:view
+```
+
 
 ## Getting To Know Slush
 
@@ -44,7 +76,7 @@ See the [CONTRIBUTING Guidelines](https://github.com/hirsch88/slush-hirsch/blob/
 ## Support
 If you have any problem or suggestion please open an issue [here](https://github.com/hirsch88/slush-hirsch/issues).
 
-## License 
+## License
 
 The MIT License
 
