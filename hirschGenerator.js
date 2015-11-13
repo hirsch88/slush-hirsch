@@ -26,6 +26,10 @@ function HirschGenerator(name, targetDir, done) {
    */
   this.targetDir = targetDir;
   /**
+   * Has a copy of the gulp config paths
+   */
+  this.paths = {};
+  /**
    * Path to the source folder where the templates are placed
    */
   this.sourceDir = '';
@@ -45,11 +49,18 @@ function HirschGenerator(name, targetDir, done) {
    * Has the information for the template creation
    */
   this.context = {
+    /**
+     * Fix because of string templates are also used by lodash
+     */
+    Namespace: '${Namespace}',
+    /**
+     * Has the compiled file-header
+     */
     banner: '',
     /**
      * NPM Configs
      */
-    pkg: require(path.join(process.cwd(), 'package.json')),
+    pkg: {},
     /**
      * Git configs of the user
      */
@@ -57,11 +68,11 @@ function HirschGenerator(name, targetDir, done) {
     /**
      * Gulp configs of the project
      */
-    gulp: require(path.join(process.cwd(), 'gulp.config.js')),
+    gulp: {},
     /**
      * Bower Components information
      */
-    bower: require(path.join(process.cwd(), 'bower.json'))
+    bower: {}
   }
   /**
    * This is default file header
@@ -121,10 +132,15 @@ function HirschGenerator(name, targetDir, done) {
 
   // Initial Pipe load
   this.pipes.push(this._loadGitConfig);
-  this.pipes.push(this._promptNameAndDesc);
-  this.pipes.push(this._folderPrompt);
-  this.pipes.push(this._definePaths);
-  this.pipes.push(this._defineFileHeader);
+  this.pipes.push(this._welcomeDialog);
+
+  if (this.name !== 'app') {
+    this.pipes.push(this._loadAppConfigs);
+    this.pipes.push(this._promptNameAndDesc);
+    this.pipes.push(this._folderPrompt);
+    this.pipes.push(this._definePaths);
+    this.pipes.push(this._defineFileHeader);
+  }
 
 }
 
@@ -139,32 +155,103 @@ HirschGenerator.prototype.end = function (onEnd) {
   this._dispatch(onEnd);
 };
 
+HirschGenerator.prototype.prompt = function (prompts) {
+  var _this = hirschGenerator;
+  this.pipes.push(function (next) {
+    for (var i = 0; i < prompts.length; i++) {
+      if (prompts[i] && prompts[i].default) {
+        var compiled = lodash.template(prompts[i].default);
+        prompts[i].default = compiled(_this.context);
+      }
+    }
+    inquirer.prompt(prompts, function (answers) {
+      for (var key in answers) {
+        if (answers.hasOwnProperty(key)) {
+          _this.context[key] = answers[key];
+        }
+      }
+      next();
+    });
+  });
+  return this;
+};
+
 HirschGenerator.prototype.template = function (options) {
   var _this = hirschGenerator;
   this.pipes.push(_template);
 
   function _template(next) {
-    var compiled = lodash.template(options.fileName);
-    options.fileName = compiled(_this.context);
-    gulp.src(path.join(__dirname, _this.name, options.template))
-      .pipe(template(_this.context))
-      .pipe(rename(options.fileName))
-      .pipe(conflict(_this.destinationDir))
-      .pipe(gulp.dest(_this.destinationDir))
-      .on('end', function () {
-        util.onSuccess(_.capitalize(_this.name), path.join(_this.destinationDir, options.fileName));
-        next();
-      })
-      .on('error', function () {
-        util.onError(_.capitalize(_this.name), path.join(_this.destinationDir, options.fileName));
-        next();
-      });
+    if (options && !options.condition || options && options.condition && _this.context[options.condition]) {
+      var compiled = lodash.template(options.fileName);
+      options.fileName = compiled(_this.context);
+      gulp.src(path.join(__dirname, _this.name, options.template))
+        .pipe(template(_this.context))
+        .pipe(rename(options.fileName))
+        .pipe(conflict(_this.destinationDir))
+        .pipe(gulp.dest(_this.destinationDir))
+        .on('end', function () {
+          util.onSuccess(_.capitalize(_this.name), path.join(_this.destinationDir, options.fileName));
+          next();
+        })
+        .on('error', function () {
+          util.onError(_.capitalize(_this.name), path.join(_this.destinationDir, options.fileName));
+          next();
+        });
+    } else {
+      console.log('TEMPLATE');
+      next();
+    }
+  }
+  return this;
+};
+
+HirschGenerator.prototype.copy = function (options) {
+  var _this = hirschGenerator;
+  this.pipes.push(_copy);
+
+  function _copy(next) {
+    if (options && !options.condition || options && options.condition && _this.context[options.condition]) {
+      var compiled = lodash.template(options.fileName);
+      options.fileName = compiled(_this.context);
+      gulp.src(path.join(__dirname, _this.name, options.source))
+        .pipe(rename(function (file) {
+          if (file.basename[0] === '_') {
+            file.basename = '.' + file.basename.slice(1);
+          }
+        }))
+        .pipe(conflict(path.join(_this.destinationDir, options.target)))
+        .pipe(gulp.dest(path.join(_this.destinationDir, options.target)))
+        .on('end', function () {
+          util.onSuccess(_.capitalize(_this.name), path.join(_this.destinationDir, options.target));
+          next();
+        })
+        .on('error', function () {
+          util.onError(_.capitalize(_this.name), path.join(_this.destinationDir, options.target));
+          next();
+        });
+    } else {
+      console.log('COPY');
+      next();
+    }
   }
   return this;
 };
 //endregion
 //region Private API
 //====================================================================================================
+HirschGenerator.prototype._welcomeDialog = function (next) {
+  var _this = hirschGenerator;
+  util.hirschSayHiToUser(_this.name, _this.context.git.user.name);
+  next();
+}
+
+HirschGenerator.prototype._loadAppConfigs = function (next) {
+  var _this = hirschGenerator;
+  _this.context.pkg = require(path.join(process.cwd(), 'package.json'));
+  _this.context.gulp = require(path.join(process.cwd(), 'gulp.config.js'));
+  _this.context.bower = require(path.join(process.cwd(), 'bower.json'));
+  next();
+}
 
 HirschGenerator.prototype._promptNameAndDesc = function (next) {
   var _this = hirschGenerator;
@@ -230,6 +317,7 @@ HirschGenerator.prototype._definePaths = function (next) {
   var _this = hirschGenerator;
   _this.sourceDir = _this.name;
   _this.destinationDir = path.join(process.cwd(), _this.context.gulp.paths.base || '', _this.context.gulp.paths.appDir || '', _this.context.path || '');
+  _this.context.paths = _this.paths;
   next();
 };
 

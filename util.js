@@ -6,7 +6,8 @@ module.exports = {
   fetchFromObject: fetchFromObject,
   onSuccess: onSuccess,
   onError: onError,
-  hirschSayHi: hirschSayHi
+  hirschSayHi: hirschSayHi,
+  hirschSayHiToUser: hirschSayHiToUser
 };
 
 /////////////////////////////////////////////////
@@ -52,13 +53,58 @@ function hirschSayHi() {
   icon += '        |     |                                 \n';
   icon += '         \\.-./            \n';
   icon += '          `-\'             \n';
-
   icon += '\n';
-  icon += '> Go to your project folder and run ' + chalk.bold.yellow('gulp serve\n');
-  icon += '> Then visit your app on ' + chalk.bold.yellow('http://localhost:3000\n');
-  icon += '\n';
+  console.log(icon);
+  // icon += '> Go to your project folder and run ' + chalk.bold.yellow('gulp serve\n');
+  // icon += '> Then visit your app on ' + chalk.bold.yellow('http://localhost:3000\n');
+  // icon += '\n';
 
-  return icon;
+}
+
+function hirschSayHiToUser(name, user) {
+  var title = 'Hi ' + user;
+  var text = 'Let\'s generate a ' + name;
+  var max = text.length > title.length ? text.length + 1 : title.length + 1;
+  var idx = max + 2;
+
+  var top = '.';
+  var bottom = '\'';
+  while(--idx){
+    top += '-';
+    bottom += '-';
+  }
+  top += '.';
+  bottom += '\'';
+
+  var firstLine = '| ' + chalk.bold.blue(title);
+  idx = max - title.length;
+  while(--idx){
+    firstLine += ' ';
+  }
+  firstLine += ' |';
+
+  var lastLine = '| ' + text;
+  idx = max - text.length;
+  while(--idx){
+    lastLine += '-';
+  }
+  lastLine += ' |';
+
+  var icon = '';
+  icon += '\n';
+  icon += chalk.bold.grey('     /|        |\\                   \n');
+  icon += chalk.bold.grey('  `__\\\\        //__\'              \n');
+  icon += chalk.bold.grey('      ||      ||') + '        '+ top +'\n';
+  icon += chalk.bold.grey('    \\__`\\     |\'__/') + '     ' + firstLine + '\n';
+  icon += chalk.bold.grey('      `_\\\\   //_\ ') + '       ' + lastLine + '\n';
+  icon += '      _.,:---;,._       '+bottom+'\n';
+  icon += '      \\_:     :_/                              \n';
+  icon += '        |@. .@|                                 \n';
+  icon += '        |     |                                 \n';
+  icon += '         \\.-./            \n';
+  icon += '          `-\'             \n';
+
+  console.log(icon);
 }
 
 
