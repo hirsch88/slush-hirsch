@@ -33,6 +33,11 @@ $ cd my-slush-hirsch && slush hirsch
 #### Template Generatros
 Run the template generators from within your project root folder:
 
+**Help**: Lists all available generators/tasks.
+```bash
+$ slush hirsch:help
+```
+
 **Component**: Creates a new component(directive) for your project.
 ```bash
 $ slush hirsch:component
@@ -43,16 +48,19 @@ $ slush hirsch:component
 $ slush hirsch:filter
 ```
 
-**Controller**: Creates a new controller for your project.
+**Service**: Creates a new service for your project.
 ```bash
-$ slush hirsch:controller
-// or
-$ slush hirsch:ctrl
+$ slush hirsch:servcie
 ```
 
 **Model**: Creates a new model for your project.
 ```bash
-$ slush hirsch:controller
+$ slush hirsch:model
+```
+
+**Module**: Creates a new module with a first view and a routes config.
+```bash
+$ slush hirsch:module
 ```
 
 **View**: Creates a new view module with routes config and a first view with controller.
