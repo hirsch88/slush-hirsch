@@ -20,6 +20,7 @@ requireDir('./component');
 requireDir('./service');
 requireDir('./filter');
 requireDir('./model');
+requireDir('./module');
 requireDir('./view');
 
 /**
