@@ -2,6 +2,7 @@ node_modules
 temp
 *.log
 .idea
+.vscode
 
 
 # don't ignore .npmignore files
