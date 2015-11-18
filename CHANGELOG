@@ -1,7 +1,13 @@
+v0.0.6:
+  date: 2015-11-18
+  changes:
+    - Improves Readme
+
 v0.0.5:
   date: 2015-11-18
   changes:
     - View Generator
+    - Service Generator
 
 v0.0.4:
   date: 2015-11-11
