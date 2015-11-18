@@ -1,4 +1,4 @@
-/// <reference path="../../../../<%= typingNesting %>typings/tsd.d.ts" />
+/// <reference path="../../../<%= typingNesting %>typings/tsd.d.ts" />
 
 module app.<%= namespace %>.<%= camelizedName %> {
   'use strict';
@@ -14,7 +14,7 @@ module app.<%= namespace %>.<%= camelizedName %> {
 
     public field;
 
-    constructor($scope: I<%= capitalizedName %>Scope, eventHandlerUtil) {
+    constructor($scope, eventHandlerUtil) {
       super($scope, eventHandlerUtil);
       this.init();
     }

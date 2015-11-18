@@ -119,6 +119,7 @@ function HirschGenerator(name, targetDir, done) {
       scripts: '**/*.ts',
       templates: '**/*.html',
       viewDir: 'views',
+      moduleDir: 'modules',
       layoutDir: 'layout',
       configDir: 'configs',
       modelDir: 'models',
@@ -309,6 +310,7 @@ HirschGenerator.prototype._folderPrompt = function (next) {
     while (levels--) {
       _this.context.typingNesting += '../';
     }
+    _this.context.namespace = _this.context.namespace.replace('modules.', '');
     next();
   });
 };
