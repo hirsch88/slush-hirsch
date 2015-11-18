@@ -1,3 +1,13 @@
+v0.0.5:
+  date: 2015-11-18
+  changes:
+    - View Generator
+
+v0.0.4:
+  date: 2015-11-11
+  changes:
+    - Some Fixes
+
 v0.0.3:
   date: 2015-11-11
   changes:
